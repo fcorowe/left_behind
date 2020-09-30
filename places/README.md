@@ -7,7 +7,7 @@ The [IMD](https://www.gov.uk/government/publications/english-indices-of-deprivat
 When identifying a place as “left behind”, we consider small areas that experience sustained high levels of deprivation. In the absence of other metrics at this scale the English Indices of Multiple Deprivation (IMD) is used as a proxy - specifically trajectories of change in deprivation over time. 
 
 ### Deprivation trajectories
-To include data from 2010 (prior to the last Census date of 2011), it was necessary to [recalculate data from the former 2001 LSOA boundaries into the current 2011 boundaries](https://geoportal.statistics.gov.uk/datasets/48150c7c4c0949e5a08aacde3be941a1_0), reflecting changes in population distribution.During this period, the number of LSOA increased from 32,482 in 2001 to 32,844 in 2011. 
+To include data from 2010 (prior to the last Census date of 2011), it was necessary to [recalculate data from the former 2001 LSOA boundaries into the current 2011 boundaries](https://github.com/fcorowe/left_behind/blob/master/places/DeprivationTrajectories_NotesonMethods.pdf), reflecting changes in population distribution.During this period, the number of LSOA increased from 32,482 in 2001 to 32,844 in 2011. 
 
 We categorise areas according to the deprivation decile within which they were classified over the last decade, based on data from [2010](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2010), [2015](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015) and [2019](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019). To summarise the frequency of different trajectories between 2010, 2015 and 2019 use the following R code:
 
