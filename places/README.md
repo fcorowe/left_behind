@@ -8,6 +8,7 @@ When identifying a place as “left behind”, we consider small areas that expe
 
 #### Deprivation trajectories
 To include data from 2010 (prior to the last Census date of 2011), it was necessary to [recalculate data from the former 2001 LSOA boundaries into the current 2011 boundaries](https://geoportal.statistics.gov.uk/datasets/48150c7c4c0949e5a08aacde3be941a1_0), reflecting changes in population distribution.During this period, the number of LSOA increased from 32,482 in 2001 to 32,844 in 2011. 
+
 We categorise areas according to the deprivation decile within which they were classified over the last decade, based on data from [2010](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2010), [2015](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015) and [2019](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019). To summarise the frequency of different trajectories between 2010, 2015 and 2019 use the following R code:
 
 ```
@@ -21,4 +22,7 @@ A summary of the frequency of deprivation trajectories are available [here](http
 #### Deriving trajectory clusters
 Deprivation trajectories are further analysed using [Sequence Analysis](http://traminer.unige.ch/user.shtml), a technique that allows us to understand whether there are typical and recurrent trajectories within our dataset using the [TraMineR](http://traminer.unige.ch/install.shtml) package. The sequence analysis code can be found [here](). 
 
-Our clusters were also compared using the original IMD domains (from 2019), the code is available [here](https://github.com/fcorowe/left_behind/edit/master/places/domains_plot.r). Sankey plots showing change in trajectories over time were created using [RawGraphs](https://rawgraphs.io/).
+Our clusters were also compared using the original IMD domains from 2019 (see figure below), the code is available [here](https://github.com/fcorowe/left_behind/edit/master/places/domains_plot.r). Sankey plots showing change in trajectories over time were created using [RawGraphs](https://rawgraphs.io/).
+
+![Violin_400](https://user-images.githubusercontent.com/57355504/94684946-a6f76500-0320-11eb-81f6-46be2643323c.jpg)
+
