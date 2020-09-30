@@ -16,7 +16,7 @@ data_summ = data %>%
   summarise(COUNT=n())
 data_summ
 ```
-A summary of the frequency of deprivation trajectories are available [here]().
+A summary of the frequency of deprivation trajectories are available [here](https://github.com/fcorowe/left_behind/blob/master/places/IMD_TrajectoryFrequency.xlsx).
 
 **Deriving trajectory clusters:**
 Deprivation trajectories are further analysed using [Sequence Analysis](http://traminer.unige.ch/user.shtml), a technique that allows us to understand whether there are typical and recurrent trajectories within our dataset using the [TraMineR](http://traminer.unige.ch/install.shtml) package. The sequence analysis code can be found [here](). 
