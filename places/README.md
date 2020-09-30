@@ -2,7 +2,7 @@
 ## Left Behind *Places*
 
 **The Index of Multiple Deprivation**
-The [IMD] is a measure of relative deprivation calculated every five years, comprised of seven domains assigned varying weights: Income, Employment, Disability and Health, Education and Skills, Barriers to Housing and Services, Living Environment and Crime (DCLG, 2019). The IMD is available at the [Lower Super Output Area (LSOA) scale](https://borders.ukdataservice.ac.uk/easy_download_data.html?data=England_lsoa_2011). 
+The [IMD](https://www.gov.uk/government/publications/english-indices-of-deprivation-2019-technical-report) is a measure of relative deprivation calculated every five years, comprised of seven domains assigned varying weights: Income, Employment, Disability and Health, Education and Skills, Barriers to Housing and Services, Living Environment and Crime (DCLG, 2019). The IMD is available at the [Lower Super Output Area (LSOA) scale](https://borders.ukdataservice.ac.uk/easy_download_data.html?data=England_lsoa_2011). 
 
 When identifying a place as “left behind”, we consider small areas that experience sustained high levels of deprivation. In the absence of other metrics at this scale the English Indices of Multiple Deprivation (IMD) is used as a proxy - specifically trajectories of change in deprivation over time. 
 
