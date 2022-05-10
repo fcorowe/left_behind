@@ -26,7 +26,8 @@ Our grouped trajectories were also compared using the original IMD domains from 
 
 ![Violin_400](https://user-images.githubusercontent.com/57355504/94684946-a6f76500-0320-11eb-81f6-46be2643323c.jpg)
 
-Sankey plots showing change in trajectories over time were created using the [ggsankey](https://github.com/davidsjoberg/ggsankey) package. 
+Sankey plots showing change in trajectories over time were created using the [ggsankey](https://github.com/davidsjoberg/ggsankey) package. Find the code [here](https://github.com/fcorowe/left_behind/blob/master/places/sankey.R).
 
+<img width="4716" alt="sankey_experiment_500" src="https://user-images.githubusercontent.com/57355504/167625628-04b58756-91f7-4fac-bce1-229499773f55.png">
 
 
