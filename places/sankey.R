@@ -14,12 +14,8 @@ library(grid)
 library(gridExtra)
 library(ggpubr)
 
-## Set working directory
-setwd("C:/Users/chrobin/Documents/LeftBehind")
-getwd()
-
 ## Read data about LSOA clusters and domains from csv.
-data <- read.csv("clustersanddomains.csv")
+data <- read.csv("IMD_ClustersandDomains.csv")
 names(data)
 
 data$X2010 <- as.character(data$X2010) # Convert IMD variables into characters not numbers
