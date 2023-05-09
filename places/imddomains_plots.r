@@ -10,7 +10,7 @@ library(ggplot2)
 library(RColorBrewer)
 
 # Install tidyr and plyr package, useful tools for tidying up your data
-library(tidyr)
+library(tidyr) 
 library(plyr)
 
 # Read csv. file with LSOA according to IMD domains and trajectory cluster
