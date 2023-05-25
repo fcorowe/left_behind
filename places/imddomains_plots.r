@@ -35,7 +35,7 @@ violin <- ggplot(datalong, aes(x=CLUSTER, y=value)) +
         axis.text.y=element_text(size=12), axis.title.y=element_text(size=12),
         strip.text=element_text(size=12), 
         legend.text = element_text(size=12),legend.title=element_blank())+
-  facet_wrap(~measure) # Produce multiple graphs, one for each domain
+  facet_wrap(~measure) # Produce multiple graphs, one for each
 violin
 
 # Export image as a high resolution tiff. image
