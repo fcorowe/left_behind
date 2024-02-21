@@ -1,3 +1,3 @@
-# Left Behind Places
+# “Left Behind” Neighbourhoods in England: Where They Are and Why They Matter
 
-Manuscript on [Google Doc](https://docs.google.com/document/d/1sRuYdnXoI9r0UDGrhRf9Nz9qCBbCHwfagC_DhC9gkbQ/edit)
+This repository contains the code to replicate the analysis presented in the article.
