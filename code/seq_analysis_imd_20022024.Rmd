@@ -1,0 +1,405 @@
+---
+title: "Identifying representation sequences of trajectories between IMD deciles"
+author: "F Rowe"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+```{r}
+library(tidyverse)
+library(TraMineR) # this is used for the sequence analysis
+library(cluster)
+library(WeightedCluster)
+library(viridis)
+library(scales)
+library(ggthemes)
+library(showtext)
+```
+Set font style
+```{r}
+# load font
+font_add_google("Roboto Condensed", "robotocondensed")
+font_add_google("Fira Sans Extra Condensed","cond")
+font_add_google("Fira Sans","fira")
+# automatically use showtext to render text
+showtext_auto()
+```
+
+## read the file containing the IMD deciles by LSOA
+
+```{r}
+IMD_deciles <- read_csv('/Users/franciscorowe/Dropbox/Francisco/Research/in_progress/left_behind_places/data/IMDTraj.csv')
+head(IMD_deciles)
+```
+
+## Create a table with unique sequences and their frequency
+```{r}
+# Create a new column that keeps only the sequences that I create manually
+IMD_deciles$sequence <- paste(IMD_deciles$"2010_DECILE", IMD_deciles$"2015_DECILE", IMD_deciles$"2019_DECILE", sep="-")
+
+# count the unique sequences
+db1 <- aggregate(data.frame(
+  count = IMD_deciles$sequence),
+  list(value = IMD_deciles$sequence),
+  length)
+head(db1)
+
+```
+
+
+
+
+```{r}
+# Create a sequence objectby specifying the values and the weights
+# specify also the colour of each decile
+seq.cl <- seqdef(db1$value, weights = db1$count, cnames = c("2010", "2015", "2019"),
+                 cpal =c("1" = "#7f3b08", 
+                         "2" = "#b35806",
+                         "3" = "#e08214",
+                         "4" = "#fdb863",
+                         "5" = "#fee0b6",
+                         "6" = "#d8daeb",
+                         "7" = "#b2abd2",
+                         "8" = "#8073ac",
+                         "9" = "#542788",
+                         "10" = "#2d004b"))
+
+```
+
+
+
+```{r}
+# Calculate transition rates
+subs_costs <- seqsubm(seq.cl, method = "TRATE")
+subs_costs <- round(subs_costs, 2)
+
+# Calculate the unique distance matrix
+seq.OM <- seqdist(seq.cl,
+                  method = "OM",
+                  sm = subs_costs)
+```
+
+
+## I run a few examples of different number of clusters and assess their performance
+```{r}
+# info on weighted clustering https://cran.r-project.org/web/packages/WeightedCluster/vignettes/WeightedCluster.pdf
+# PAM clustering
+for (i in 3:15) {
+  pamwardclust <- wcKMedoids(seq.OM, k= i, weights=db1$count)
+  print(paste("number of k =", i,": Average Silhouette Width (weighted) is" , pamwardclust$stats[5]))
+
+}
+```
+
+Table 3 in the manual of weighted clustering package https://cran.r-project.org/web/packages/WeightedCluster/vignettes/WeightedCluster.pdf suggests that:
+
+| ASW         | Interpretation proposed                   |
+| ----------- | ----------------------------------------- |
+| 0.71 − 1.00 | Strong structure identified               |
+| 0.51 − 0.70 | Reasonable structure identified           |
+| 0.26 − 0.50 | Structure is weak and could be artificial |
+| ≤ 0.25      | Try other algorithms. No structure        |
+
+I think the best clustering solution is  with k = 9
+However I plot with k=6 and k=8 too
+
+
+### with k = 6
+```{r}
+pamwardclust6 <- wcKMedoids(seq.OM, k = 6, weights=db1$count)
+
+# give names to clusters
+# 1 is the cluster with the most deprived areas in 2010 and 6 is the cluster with the least deprived areas in 2010
+pamwardclust6$clustering <- factor(pamwardclust6$clustering, levels=c(1,
+                                                                    38,
+                                                                    69,
+                                                                    127,
+                                                                    209,
+                                                                    30),
+                                  labels=c("1", "2", "3", "4", "5", "6"))
+
+# calculate silouette score to use later in graphs
+sil <- wcSilhouetteObs(seq.OM, pamwardclust6$clustering, weights=db1$count, measure="ASWw")
+seqIplot(seq.cl, group = pamwardclust6$clustering, border =NA, cex.axis=1.5, cex.lab=1.5)
+```
+
+### with k = 8
+```{r}
+pamwardclust8 <- wcKMedoids(seq.OM, k = 8, weights=db1$count)
+# give names to clusters
+# 1 is the cluster with the most deprived areas in 2010 and 8 is the cluster with the least deprived areas in 2010
+pamwardclust8$clustering <- factor(pamwardclust8$clustering, levels=c(1,
+                                                                    38,
+                                                                    69,
+                                                                    98,
+                                                                    159,
+                                                                    209,
+                                                                    267,
+                                                                    18),
+                                  labels=c("1", "2", "3", "4", "5", "6", "7", "8"))
+
+
+# calculate silouette score to use later in graphs
+sil <- wcSilhouetteObs(seq.OM, 
+                       pamwardclust8$clustering, 
+                       weights=db1$count, 
+                       measure="ASWw")
+```
+
+
+```{r}
+for (i in unique(pamwardclust8$clustering)) {
+  seqIplot(seq.cl[pamwardclust8$clustering == i,],
+           border =NA,
+           with.legend = FALSE,
+           sortv=sil, cex.axis=1.5,
+           cex.lab=1.5)
+} 
+  
+seqlegend(seq.cl, ncol = 5, cex = 1.2)
+```
+
+### with k = 9
+```{r}
+pamwardclust9 <- wcKMedoids(seq.OM, 
+                            k = 9, 
+                            weights=db1$count)
+
+# give names to clusters
+# 1 is the cluster with the most deprived areas in 2010 and 8 is the cluster with the least deprived areas in 2010
+pamwardclust9$clustering <- factor(pamwardclust9$clustering, levels=c(1,
+                                                                    38,
+                                                                    69,
+                                                                    98,
+                                                                    136,
+                                                                    197,
+                                                                    240,
+                                                                    267,
+                                                                    18),
+                                  labels=c("1", "2", "3", "4", "5", "6", "7", "8", "9"))
+
+# calculate silouette score to use later in graphs
+sil <- wcSilhouetteObs(seq.OM, 
+                       pamwardclust9$clustering,
+                       weights=db1$count, measure="ASWw")
+```
+
+```{r}
+for (i in unique(pamwardclust9$clustering)) {
+  seqIplot(seq.cl[pamwardclust9$clustering == i,], 
+           border =NA, 
+           with.legend = FALSE, 
+           sortv=sil, 
+           cex.axis=1.5, 
+           cex.lab=1.5)
+} 
+  
+seqlegend(seq.cl, ncol = 5, cex = 1.2)
+```
+
+### with k = 10
+```{r}
+pamwardclust10 <- wcKMedoids(seq.OM, 
+                            k = 10, 
+                            weights=db1$count)
+
+# give names to clusters
+# 1 is the cluster with the most deprived areas in 2010 and 8 is the cluster with the least deprived areas in 2010
+pamwardclust10$clustering <- factor(pamwardclust10$clustering, levels=c(1,
+                                                                    38,
+                                                                    69,
+                                                                    98,
+                                                                    131,
+                                                                    164,
+                                                                    203,
+                                                                    240,
+                                                                    267,
+                                                                    18),
+                                  labels=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"))
+
+# calculate silouette score to use later in graphs
+sil <- wcSilhouetteObs(seq.OM, 
+                       pamwardclust10$clustering,
+                       weights=db1$count, measure="ASWw")
+```
+
+
+```{r}
+mypath <- file.path("../outcomes/",
+                      paste("seqiplot_6c.jpg", sep = ""))
+  
+  jpeg(file=mypath, width = 1000, height = 1000)
+  seqIplot(seq.cl, 
+           group = pamwardclust6$clustering, 
+           border =NA, 
+           cex.axis=1.5, 
+           cex.lab=1.5)
+  
+  dev.off()
+```
+```{r}
+mypath <- file.path("../outcomes/",
+                      paste("seqiplot_8c.jpg", sep = ""))
+  
+  jpeg(file=mypath, width = 1000, height = 1000)
+  seqIplot(seq.cl, 
+           group = pamwardclust8$clustering, 
+           border =NA, 
+           cex.axis=1.5, 
+           cex.lab=1.5)
+  
+  dev.off()
+```
+
+```{r}
+mypath <- file.path("../outcomes/",
+                      paste("seqiplot_9c.jpg", sep = ""))
+  
+  jpeg(file=mypath, width = 1000, height = 1000)
+  seqIplot(seq.cl, 
+           group = pamwardclust9$clustering, 
+           border =NA,
+           sortv=sil,
+           cex.axis=1.5, 
+           cex.lab=1.5)
+  
+  dev.off()
+```
+```{r}
+mypath <- file.path("../outcomes/",
+                      paste("seqiplot_10c.jpg", sep = ""))
+  
+  jpeg(file=mypath, width = 1000, height = 1000)
+  seqIplot(seq.cl, 
+           group = pamwardclust10$clustering, 
+           border =NA,
+           sortv=sil,
+           cex.axis=1.5, 
+           cex.lab=1.5)
+  
+  dev.off()
+```
+
+```{r}
+# Attach the cluster label next to each unique sequence
+# there are three new columns corresponding to three cluster solutions (i.e. 6, 8 and 9)
+
+db1$clst6 <- pamwardclust6$clustering
+db1$clst8 <- pamwardclust8$clustering
+db1$clst9 <- pamwardclust9$clustering
+db1$clst10 <- pamwardclust10$clustering
+
+```
+
+
+```{r}
+# Create a dataframe that includes all sequences with their corresponding cluster number
+IMD_deciles_clst <- merge(x = IMD_deciles, 
+                          y = db1, 
+                          by.x = "sequence",
+                          by.y = "value", 
+                          all.x = TRUE)
+
+head(IMD_deciles_clst)
+
+write.csv(IMD_deciles_clst, "../data/imd_clstid.csv")
+
+```
+
+
+
+```{r}
+elbow_plot <- fviz_nbclust(seq.OM, 
+                           cluster::pam, 
+                           method = "wss",
+                           k.max = 20)
+
+
+df_elbow <- do.call(data.frame, elbow_plot$data)
+df_elbow <- df_elbow %>% 
+  mutate(method = "wss",
+         value = y / 100000) %>% 
+  dplyr::select( c(clusters, value, method))
+
+print(elbow_plot)
+```
+```{r}
+silhouette_plot <- fviz_nbclust(seq.OM, 
+                                cluster::pam, 
+                                method = "silhouette",
+                                k.max = 20)
+
+df_silhouette <-do.call(data.frame, silhouette_plot$data)
+
+df_silhouette <- df_silhouette %>% 
+  mutate(method = "silhouette") %>% 
+  rename(value = y)
+  
+print(silhouette_plot)
+```
+
+```{r}
+gap_plot <- fviz_nbclust(seq.OM, 
+                         cluster::pam, 
+                         method = "gap_stat",
+                         k.max = 20)
+
+df_gap <- gap_plot$data
+
+df_gap <- df_gap %>% 
+  dplyr::select(
+  c(clusters, gap)
+) %>% mutate(
+  method = "gap"
+) %>% 
+  rename(value = gap)
+  
+print(gap_plot)
+```
+```{r}
+df_scores <- rbind(df_elbow, df_silhouette, df_gap)
+df_scores$clusters <- as.integer(as.character(df_scores$clusters))
+```
+
+```{r}
+# Create the line plot
+ggplot(df_scores, 
+       aes(x = clusters, y = value, color = method)) +
+  geom_line(size = 2) +
+  labs(x = "Number of clusters k", y = "Score") +
+  scale_color_manual(values = c("wss" = "#E69F00", "silhouette" = "#009E73", "gap" = "#0072B2")) +
+  theme_tufte() + 
+  theme(
+    text = element_text(family = "robotocondensed"),
+    axis.text.y = element_text(size = 20),
+    axis.title.y = element_text(size = 22),
+    axis.text.x = element_text(size = 20),
+    axis.title.x = element_text(size = 22),
+    legend.position = "bottom",
+    legend.text = element_text(size = 22),
+    legend.title=element_blank()
+    )
+
+png("/Users/franciscorowe/Dropbox/Francisco/Research/in_progress/left_behind_places/outcomes/optimal_cluster.png",units="in", width=10, height=10, res=300)
+last_plot()
+dev.off()
+
+```
+
+
+```{r}
+df
+
+ggplot(df, aes(x = X, y = Y, color = Group)) +
+  geom_line() +
+  labs(x = "X Axis", y = "Y Axis", title = "Line Plot for Three Groups") +
+  scale_color_manual(values = c("Group1" = "blue", "Group2" = "red", "Group3" = "green")) +
+  theme_minimal()
+```
+
+
+
+
