@@ -24,6 +24,15 @@ Deprivation trajectories are further analysed using [Sequence Analysis](http://t
 
 Our grouped trajectories were also compared using the original IMD domains from 2019 (see figure below), the code is available [here](https://github.com/fcorowe/left_behind/edit/master/places/domains_plot.r). 
 
+The trajectories are labelled as follows:
+
+C1 is Entrenched deprivation
+C2 is Fluctuating disadvantage
+C3 is Below average
+C4 is Shifting average
+C5 is Fluctuating average
+C6 is Stable affluence
+
 ![Violin_400](https://user-images.githubusercontent.com/57355504/94684946-a6f76500-0320-11eb-81f6-46be2643323c.jpg)
 
 Sankey plots showing change in trajectories over time were created using the [ggsankey](https://github.com/davidsjoberg/ggsankey) package. Find the code [here](https://github.com/fcorowe/left_behind/blob/master/places/sankey.R).
