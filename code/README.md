@@ -31,7 +31,7 @@ C2: Fluctuating disadvantage\
 C3: Below average\
 C4: Shifting average\
 C5: Fluctuating average\
-C6: Stable affluence\
+C6: Stable affluence
 
 ![Violin_400](https://user-images.githubusercontent.com/57355504/94684946-a6f76500-0320-11eb-81f6-46be2643323c.jpg)
 
