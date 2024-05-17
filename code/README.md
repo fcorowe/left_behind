@@ -26,12 +26,12 @@ Our grouped trajectories were also compared using the original IMD domains from 
 
 The trajectories are labelled as follows:
 
-C1 is Entrenched deprivation
-C2 is Fluctuating disadvantage
-C3 is Below average
-C4 is Shifting average
-C5 is Fluctuating average
-C6 is Stable affluence
+C1: Entrenched deprivation\
+C2: Fluctuating disadvantage\
+C3: Below average\
+C4: Shifting average\
+C5: Fluctuating average\
+C6: Stable affluence\
 
 ![Violin_400](https://user-images.githubusercontent.com/57355504/94684946-a6f76500-0320-11eb-81f6-46be2643323c.jpg)
 
